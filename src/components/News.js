@@ -25,10 +25,7 @@ export default class News extends Component {
   nextClick = async () => {
     console.log("next")
 
-    if (this.state.page + 1 > Math.ceil(this.state.totalArticles / 20)) {
-
-    }
-    else {
+   
       let url = `https://newsapi.org/v2/top-headlines?country=in&apiKey=c52ff0f6a6364241b85cd6ccf67bc8d9&page=${this.state.page}&pageSize=20`
       let data = await fetch(url);
       let parsedData = await data.json()
@@ -37,7 +34,7 @@ export default class News extends Component {
       this.setState({
         page: this.state.page + 1
       })
-    }
+    
   }
 
 
@@ -61,7 +58,7 @@ export default class News extends Component {
         <h2 className='mx-5 my-3'>News monkey - Top headlines</h2>
         <div className="row mx-4 my-4">
           {this.state.articles.map((element) => {
-            console.log(element.description)
+            // console.log(element.description)
             return <div className="col-md-3 mx-4" key={element.url}>
               <NewsItem
                 title={element.title}
@@ -75,7 +72,7 @@ export default class News extends Component {
         </div>
         <div className="container d-flex justify-content-between">
           <button type="button" disabled={this.state.page <= 1} className="btn btn-success" onClick={this.prevClick}>Previous</button>
-          <button type="button" disabled={this.state.page + 1 > Math.ceil(this.state.totalArticles / 20)} className="btn btn-success" onClick={this.nextClick}>Next</button>
+          <button type="button" disabled={this.state.page + 1 > Math.ceil(this.state.totalArticles / 20)} className="btn btn-dark" onClick={this.nextClick}>Next</button>
         </div>
       </div>
     )
