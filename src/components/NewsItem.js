@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import AltImage from "./AltImage.gif"
 
 
 export default class NewsItem extends Component {
@@ -14,7 +15,7 @@ export default class NewsItem extends Component {
           <span className="position-absolute top-0 translate-middle badge rounded-pill bg-secondary" style={{left: "80%"}}>
             {source}
           </span>
-          <img src={imageUrl} className="card-img-top" alt="N/A" />
+          <img src={!imageUrl?AltImage:imageUrl} className="card-img-top" alt="N/A" />
           <div className="card-body">
             <h5 className="card-title">{this.props.title}...</h5>
             <p className="card-text">{description}...</p>
