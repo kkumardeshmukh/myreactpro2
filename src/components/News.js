@@ -71,7 +71,8 @@ const News = (props) => {
  
     return (
       <div className='container justify-centent-center'>
-        <h2 className='mx-5 my-3 text-center'>News monkey - Top {capitalize(props.category)} headlines</h2>
+        <h2 className='mx-5 text-center' style={{marginTop: "90px",
+    marginBottom: "20px"}}>News monkey - Top {capitalize(props.category)} headlines</h2>
 
         {loading && <Spinner />}
         <div className="container d-flex justify-centent-center">

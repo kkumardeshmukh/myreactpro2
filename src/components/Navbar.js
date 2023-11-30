@@ -5,7 +5,7 @@ const Navbar = ()=>{
  
     return (
       <div>
-        <nav className="navbar nav navbar-expand-lg navbar-dark bg-dark container-fluid">
+        <nav className="navbar fixed-top nav navbar-expand-lg navbar-dark bg-dark container-fluid">
           <div className="container-fluid">
             <Link className="navbar-brand" to="/">NEWS MONKEY</Link>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
