@@ -1,6 +1,5 @@
 
 import './App.css';
-
 import React from 'react'
 import Navbar from './components/Navbar';
 import News from './components/News';
@@ -10,7 +9,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const App= ()=>{
   let pageSize=9
-  
   let apiKey = process.env.REACT_APP_NEWS_API
 
     return (
