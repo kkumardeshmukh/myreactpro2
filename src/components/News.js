@@ -35,7 +35,7 @@ const News = (props) => {
 
     updateNews()
 
-  });
+  },[] );
 
 
 
@@ -70,14 +70,14 @@ const News = (props) => {
 
  
     return (
-      <div className='container aligh-item-center'>
-        <h2 className=' my-3 text-center'>News monkey - Top {capitalize(props.category)} headlines</h2>
+      <div className='container justify-centent-center'>
+        <h2 className='mx-5 my-3 text-center'>News monkey - Top {capitalize(props.category)} headlines</h2>
 
         {loading && <Spinner />}
         <div className="container d-flex justify-centent-center">
-          <div className="row">
+          <div className="row mx-4 my-4">
             {!loading && articles.map((element) => {
-              return <div className="col-md-3 mx-3" key={element.url}>
+              return <div className="col-md-3 mx-4" key={element.url}>
                 <NewsItem
                   title={element.title}
                   description={element.description}
