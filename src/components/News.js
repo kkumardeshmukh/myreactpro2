@@ -1,96 +1,83 @@
-import React, { Component } from 'react'
+import React from 'react'
 import NewsItem from './NewsItem'
 import Spinner from './Spinner'
 import propTypes from 'prop-types'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
-export default class News extends Component {
+const News = (props) => {
 
-  static defaultProps = {
-    country: "in",
-    pageSize: 9,
-    category: "general"
+  const [articles, setArticles] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [page, setPage] = useState(1)
+  const [totalArticles, setTotalArticles] = useState(0);
 
-  }
 
-  static propTypes = {
-    country: propTypes.string,
-    pageSize: propTypes.number,
-    category: propTypes.string,
-  }
+  const capitalize= (s)=>
+{
+    return s[0].toUpperCase() + s.slice(1);
+}
 
-  constructor() {
-    super()
 
-    // we made this as a object which can be changed with the state
-    this.state = {
-      articles: [],
-      loading: false,
-      page: 1
-    }
-  }
-
-  // async updateNews() {
-
-  //   let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`
-  //   this.setState({ loading: true })
-  //   let data = await fetch(url);
-  //   let parsedData = await data.json()
-  //   console.log(parsedData)
-  //   this.setState({ articles: parsedData.articles, totalArticles: parsedData.totalResults })
-  //   this.setState({ loading: false })
-
-  // }
-
-  async componentDidMount() {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page}&pageSize=${this.props.pageSize}`
-    this.setState({ loading: true })
+  let updateNews = async() => {
+    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`
+    setLoading(true)
     let data = await fetch(url);
     let parsedData = await data.json()
     console.log(parsedData)
-    this.setState({ articles: parsedData.articles, totalArticles: parsedData.totalResults })
-    this.setState({ loading: false })
+    setArticles(parsedData.articles)
+    setTotalArticles(parsedData.totalResults)
+    setLoading(false)
+    document.title=`NEWS MONKEY - ${capitalize(props.category)}`
   }
 
-  nextClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page+1}&pageSize=${this.props.pageSize}`
-    this.setState({ loading: true })
+  useEffect(() => {
+
+    updateNews()
+
+  });
+
+
+
+  const nextClick = async () => {
+    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page + 1}&pageSize=${props.pageSize}`
+    setLoading(true)
     let data = await fetch(url);
     let parsedData = await data.json()
     console.log(parsedData)
-    this.setState({ articles: parsedData.articles, totalArticles: parsedData.totalResults })
-    this.setState({ loading: false })
-    this.setState({
-      page: this.state.page + 1
-    })
-   
+    setArticles(parsedData.articles)
+    setTotalArticles(parsedData.totalResults)
+    setLoading(false)
+    setPage(page+1)
+    document.title=`NEWS MONKEY - ${capitalize(props.category)}`
 
   }
 
 
-  prevClick = async () => {
-    let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apiKey}&page=${this.state.page-1}&pageSize=${this.props.pageSize}`
-    this.setState({ loading: true })
+  const prevClick = async () => {
+    let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}&page=${page - 1}&pageSize=${props.pageSize}`
+    setLoading(true)
     let data = await fetch(url);
     let parsedData = await data.json()
     console.log(parsedData)
-    this.setState({ articles: parsedData.articles, totalArticles: parsedData.totalResults })
-    this.setState({ loading: false })
-    this.setState({
-      page: this.state.page - 1
-    })
-   
+    setArticles(parsedData.articles)
+    setTotalArticles(parsedData.totalResults)
+    setLoading(false)
+    setPage(page-1)
+    document.title=`NEWS MONKEY - ${capitalize(props.category)}`
+
   }
 
-  render() {
+ 
     return (
-      <div className='container justify-centent-center'>
-        <h2 className='mx-5 my-3 text-center'>News monkey - Top headlines</h2>
+      <div className='container aligh-item-center'>
+        <h2 className=' my-3 text-center'>News monkey - Top {capitalize(props.category)} headlines</h2>
 
-        {this.state.loading && <Spinner />}
+        {loading && <Spinner />}
         <div className="container d-flex justify-centent-center">
-          <div className="row mx-4 my-4">
-            {!this.state.loading && this.state.articles.map((element) => {
-              return <div className="col-md-3 mx-4" key={element.url}>
+          <div className="row">
+            {!loading && articles.map((element) => {
+              return <div className="col-md-3 mx-3" key={element.url}>
                 <NewsItem
                   title={element.title}
                   description={element.description}
@@ -107,41 +94,27 @@ export default class News extends Component {
         </div>
 
 
-        {!this.state.loading &&
+        {!loading &&
           <div className="container d-flex justify-content-between">
-            <button type="button" disabled={this.state.page <= 1} className="btn btn-dark" onClick={this.prevClick}>Previous</button>
-            <button type="button" disabled={this.state.page + 1 > Math.ceil(this.state.totalArticles / this.props.pageSize)} className="btn btn-dark" onClick={this.nextClick}>Next</button>
+            <button type="button" disabled={page <= 1} className="btn btn-success" onClick={prevClick}>Previous</button>
+            <button type="button" disabled={page + 1 > Math.ceil(totalArticles / props.pageSize)} className="btn btn-success" onClick={nextClick}>Next</button>
           </div>}
       </div>
     )
-  }
+  
 }
 
+News.defaultProps = {
+  country: "in",
+  pageSize: 9,
+  category: "general"
 
+}
 
+News.propTypes = {
+  country: propTypes.string,
+  pageSize: propTypes.number,
+  category: propTypes.string,
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// c52ff0f6a6364241b85cd6ccf67bc8d9
+export default News
